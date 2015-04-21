@@ -20,7 +20,7 @@ int drink_stat = 0;
 
 void init_lcd(void) {
    RCC_AHBPeriphClockCmd(RCC_AHBPeriph_FSMC, ENABLE);
-   RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOD | RCC_APB2Periph_GPIOE | RCC_APB2Periph_GPIOG, ENABLE);
+   RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOD | RCC_APB2Periph_GPIOE | RCC_APB2Periph_GPIOG | RCC_APB2Periph_AFIO, ENABLE);
    STM3210E_LCD_Init();
 }
 
@@ -48,6 +48,7 @@ void init_buttons(void) {
   EXTI_InitStructure.EXTI_Line = EXTI_Line14;
   EXTI_Init(&EXTI_InitStructure);
   EXTI_InitStructure.EXTI_Line = EXTI_Line15;
+  EXTI_Init(&EXTI_InitStructure);
 
   NVIC_InitStructure.NVIC_IRQChannel = EXTI15_10_IRQn;
   NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
@@ -93,17 +94,18 @@ int main(void) {
   /* -------------------------------------------------------------------------- */
 
   init_valves();
+  init_buttons();
   init_lcd();
   write_lcd(0);
 
   while (1) {
     int i;
     for(i = 0; i < 16; i++) {
-      set_valve_status(i, 1);
+      GPIO_Write(GPIOA, 0xFF);
       Delayms(1000);
     }
     for(i = 0; i < 16; i++) {
-      set_valve_status(i, 0);
+      GPIO_Write(GPIOA, 0x00);
       Delayms(1000);
     }
   }
