@@ -24,17 +24,34 @@ void init_lcd(void) {
    STM3210E_LCD_Init();
 }
 
-void write_lcd(int selected) {
-  LCD_Clear();
-  char* drink1 = "Water";
-  char* drink2 = "More Water";
-  char* drink3 = "Too Much Water";
-  char* drink4 = "Tequila";
-  LCD_DrawString(0, 16, (u8*)drink1, 5);
-  LCD_DrawString(2, 16, (u8*)drink2, 10);
-  LCD_DrawString(4, 16, (u8*)drink3, 14);
-  LCD_DrawString(6, 16, (u8*)drink4, 7);
-  LCD_DrawChar(2*selected, 0, '@');  
+void init_buttons(void) {
+  RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_11 | GPIO_Pin_12 | GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15 ;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
+  GPIO_Init(GPIOB, &GPIO_InitStructure);
+
+  GPIO_EXTILineConfig(GPIO_PortSourceGPIOB, GPIO_PinSource11);
+  GPIO_EXTILineConfig(GPIO_PortSourceGPIOB, GPIO_PinSource12);
+  GPIO_EXTILineConfig(GPIO_PortSourceGPIOB, GPIO_PinSource13);
+  GPIO_EXTILineConfig(GPIO_PortSourceGPIOB, GPIO_PinSource14);
+  GPIO_EXTILineConfig(GPIO_PortSourceGPIOB, GPIO_PinSource15);
+
+  EXTI_InitStructure.EXTI_Line = EXTI_Line11;
+  EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
+  EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising;
+  EXTI_InitStructure.EXTI_LineCmd = ENABLE;
+  EXTI_Init(&EXTI_InitStructure);
+  EXTI_InitStructure.EXTI_Line = EXTI_Line12;
+  EXTI_Init(&EXTI_InitStructure);
+  EXTI_InitStructure.EXTI_Line = EXTI_Line13;
+  EXTI_Init(&EXTI_InitStructure);
+  EXTI_InitStructure.EXTI_Line = EXTI_Line14;
+  EXTI_Init(&EXTI_InitStructure);
+  EXTI_InitStructure.EXTI_Line = EXTI_Line15;
+
+  NVIC_InitStructure.NVIC_IRQChannel = EXTI15_10_IRQn;
+  NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+  NVIC_Init(&NVIC_InitStructure);
 }
 
 void Delayms(u32 m) {
@@ -77,18 +94,16 @@ int main(void) {
 
   init_valves();
   init_lcd();
-  write_lcd(1);
+  write_lcd(0);
 
   while (1) {
     int i;
     for(i = 0; i < 16; i++) {
       set_valve_status(i, 1);
-      write_lcd(i % 4);
       Delayms(1000);
     }
     for(i = 0; i < 16; i++) {
       set_valve_status(i, 0);
-      write_lcd(i % 4);
       Delayms(1000);
     }
   }

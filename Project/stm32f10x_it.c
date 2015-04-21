@@ -184,6 +184,7 @@ void EXTI15_10_IRQHandler(void) {
     else {
       drink_stat--;
     }
+    write_lcd(drink_stat);
   }
   if(EXTI_GetITStatus(EXTI_Line15) != RESET) {
     if(drink_stat == 4) {
@@ -192,7 +193,7 @@ void EXTI15_10_IRQHandler(void) {
     else {
       drink_stat++;
     }
-
+    write_lcd(drink_stat);
   }
 }
 
