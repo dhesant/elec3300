@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<Workspace>
+  <ConfigDictionary>
+    
+  <CurrentConfigs><Project>Project/STM3210E debug</Project></CurrentConfigs></ConfigDictionary>
+  <Desktop>
+    <Static>
+      <Workspace>
+        <ColumnWidths>
+          
+          
+          
+          
+        <Column0>251</Column0><Column1>27</Column1><Column2>27</Column2><Column3>1242260</Column3></ColumnWidths>
+      </Workspace>
+      <Build>
+        
+        
+        
+        
+      <ColumnWidth0>20</ColumnWidth0><ColumnWidth1>933</ColumnWidth1><ColumnWidth2>249</ColumnWidth2><ColumnWidth3>62</ColumnWidth3></Build>
+    <Debug-Log><ColumnWidth0>20</ColumnWidth0><ColumnWidth1>1245</ColumnWidth1></Debug-Log><TerminalIO/></Static>
+    <Windows>
+      
+      
+    <Wnd0>
+        <Tabs>
+          <Tab>
+            <Identity>TabID-25597-10375</Identity>
+            <TabName>Workspace</TabName>
+            <Factory>Workspace</Factory>
+            <Session>
+              
+            <NodeDict><ExpandedNode>Project</ExpandedNode><ExpandedNode>Project/CMSIS</ExpandedNode><ExpandedNode>Project/Doc</ExpandedNode><ExpandedNode>Project/EWARMv5</ExpandedNode><ExpandedNode>Project/STM32_EVAL</ExpandedNode><ExpandedNode>Project/StdPeriph_Driver</ExpandedNode><ExpandedNode>Project/StdPeriph_Driver/stm32f10x_fsmc.c</ExpandedNode><ExpandedNode>Project/User</ExpandedNode><ExpandedNode>Project/User/lcd.c</ExpandedNode><ExpandedNode>Project/User/lcd.c/Output</ExpandedNode></NodeDict></Session>
+          </Tab>
+        </Tabs>
+        
+      <SelectedTab>0</SelectedTab></Wnd0><Wnd1>
+        <Tabs>
+          <Tab>
+            <Identity>TabID-24844-10594</Identity>
+            <TabName>Build</TabName>
+            <Factory>Build</Factory>
+            <Session/>
+          </Tab>
+        <Tab><Identity>TabID-4812-16700</Identity><TabName>Debug Log</TabName><Factory>Debug-Log</Factory><Session/></Tab></Tabs>
+        
+      <SelectedTab>0</SelectedTab></Wnd1></Windows>
+    <Editor>
+      
+      
+      
+      
+    <Pane><Tab><Factory>TextEditor</Factory><Filename>D:\13F3300\PROJ\Utilities\STM32_EVAL\stm32_eval.h</Filename><XPos>0</XPos><YPos>124</YPos><SelStart>3182</SelStart><SelEnd>3182</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\13F3300\PROJ\Utilities\STM32_EVAL\stm32_eval.c</Filename><XPos>0</XPos><YPos>121</YPos><SelStart>5825</SelStart><SelEnd>5825</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\13F3300\PROJ\Utilities\STM32_EVAL\STM3210E_EVAL\stm3210e_eval.h</Filename><XPos>0</XPos><YPos>91</YPos><SelStart>3388</SelStart><SelEnd>3388</SelEnd></Tab><ActiveTab>2</ActiveTab><Tab><Factory>TextEditor</Factory><Filename>D:\13F3300\PROJ\Project\stm32f10x_conf.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>938</SelStart><SelEnd>938</SelEnd></Tab></Pane><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor>
+    <Positions>
+      
+      
+      
+      
+      
+    <Top><Row0><Sizes><Toolbar-01c32510><key>iaridepm.enu1</key></Toolbar-01c32510></Sizes></Row0></Top><Left><Row0><Sizes><Wnd0><Rect><Top>-2</Top><Left>-2</Left><Bottom>665</Bottom><Right>325</Right><x>-2</x><y>-2</y><xscreen>197</xscreen><yscreen>197</yscreen><sizeHorzCX>186907</sizeHorzCX><sizeHorzCY>217680</sizeHorzCY><sizeVertCX>310247</sizeVertCX><sizeVertCY>737017</sizeVertCY></Rect></Wnd0></Sizes></Row0></Left><Right><Row0><Sizes/></Row0></Right><Bottom><Row0><Sizes><Wnd1><Rect><Top>-2</Top><Left>-2</Left><Bottom>195</Bottom><Right>1056</Right><x>-2</x><y>-2</y><xscreen>1058</xscreen><yscreen>197</yscreen><sizeHorzCX>1003795</sizeHorzCX><sizeHorzCY>217680</sizeHorzCY><sizeVertCX>186907</sizeVertCX><sizeVertCY>217680</sizeVertCY></Rect></Wnd1></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
+  </Desktop>
+</Workspace>
+
+
