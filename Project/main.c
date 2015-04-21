@@ -16,16 +16,22 @@ uint32_t EXTI_Line;
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 
+void init_lcd(void) {
+   RCC_AHBPeriphClockCmd(RCC_AHBPeriph_FSMC, ENABLE);
+   RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOD | RCC_APB2Periph_GPIOE | RCC_APB2Periph_GPIOG, ENABLE);
+   STM3210E_LCD_Init();
+}
+
 void write_lcd(int selected) {
   LCD_Clear();
-  const char drink1 = "Water";
-  const char drink2 = "More Water";
-  const char drink3 = "Too Much Water";
-  const char drink4 = "Tequila";
-  LCD_DrawString(0, 16, &drink1, 5);
-  LCD_DrawString(2, 16, &drink2, 10);
-  LCD_DrawString(4, 16, &drink3, 14);
-  LCD_DrawString(6, 16, &drink4, 7);
+  char* drink1 = "Water";
+  char* drink2 = "More Water";
+  char* drink3 = "Too Much Water";
+  char* drink4 = "Tequila";
+  LCD_DrawString(0, 16, (u8*)drink1, 5);
+  LCD_DrawString(2, 16, (u8*)drink2, 10);
+  LCD_DrawString(4, 16, (u8*)drink3, 14);
+  LCD_DrawString(6, 16, (u8*)drink4, 7);
   LCD_DrawChar(2*selected, 0, '>');  
 }
 
@@ -69,19 +75,17 @@ int main(void) {
   /* -------------------------------------------------------------------------- */
 
   init_valves();
-  STM3210E_LCD_Init();
-  LCD_Clear();
+  init_lcd();
+  write_lcd(1);
 
   while (1) {
     int i;
     for(i = 0; i < 16; i++) {
       set_valve_status(i, 1);
-      write_lcd(i % 4);
       Delayms(1000);
     }
     for(i = 0; i < 16; i++) {
       set_valve_status(i, 0);
-      write_lcd(i % 4);
       Delayms(1000);
     }
   }
