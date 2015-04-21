@@ -1,5 +1,8 @@
 /* Includes ------------------------------------------------------------------*/
+#include "stm32f10x_conf.h"
 #include "stm32f10x.h"
+#include "lcd.h"
+#include "pneu.h"
 
 /* Private typedef -----------------------------------------------------------*/
 GPIO_InitTypeDef GPIO_InitStructure;
@@ -13,9 +16,27 @@ uint32_t EXTI_Line;
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 
+void write_lcd(int selected) {
+  LCD_Clear();
+  const char drink1 = "Water";
+  const char drink2 = "More Water";
+  const char drink3 = "Too Much Water";
+  const char drink4 = "Tequila";
+  LCD_DrawString(0, 16, &drink1, 5);
+  LCD_DrawString(2, 16, &drink2, 10);
+  LCD_DrawString(4, 16, &drink3, 14);
+  LCD_DrawString(6, 16, &drink4, 7);
+  LCD_DrawChar(2*selected, 0, '>');  
+}
 
-int main(void)
-{  
+void Delayms(u32 m) {
+  u32 i;
+  
+  for(; m != 0; m--)
+    for (i=0; i<50000; i++);
+}
+
+int main(void) {  
   /* Setup the microcontroller system. Initialize the Embedded Flash Interface,  
      initialize the PLL and update the SystemFrequency variable. */
   SystemInit();
@@ -47,18 +68,21 @@ int main(void)
   /* Global initialization ends above.*/
   /* -------------------------------------------------------------------------- */
 
-  /* Please add your project initialization code below */
+  init_valves();
+  STM3210E_LCD_Init();
+  LCD_Clear();
 
-
-
-  while (1)
-  {
-  /* Please add your project implementation code below */
-
-
-
-
+  while (1) {
+    int i;
+    for(i = 0; i < 16; i++) {
+      set_valve_status(i, 1);
+      write_lcd(i % 4);
+      Delayms(1000);
+    }
+    for(i = 0; i < 16; i++) {
+      set_valve_status(i, 0);
+      write_lcd(i % 4);
+      Delayms(1000);
+    }
   }
 }
-
-
