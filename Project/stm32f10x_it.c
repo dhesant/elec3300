@@ -1,5 +1,6 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x_it.h"
+#include "bartender.h"
 
 /** @addtogroup STM32F10x_StdPeriph_Examples
   * @{
@@ -163,10 +164,35 @@ void EXTI9_5_IRQHandler(void)
   * @param  None
   * @retval None
   */
-void EXTI15_10_IRQHandler(void)
-{
-  if(EXTI_GetITStatus(EXTI_Line10) != RESET)
-  {
+void EXTI15_10_IRQHandler(void) {
+  extern int drink_stat;
+  if(EXTI_GetITStatus(EXTI_Line10) != RESET) {
+  }
+  if(EXTI_GetITStatus(EXTI_Line11) != RESET) {
+    fill_glass(drink_stat);
+  }
+  if(EXTI_GetITStatus(EXTI_Line12) != RESET) {
+
+  }
+  if(EXTI_GetITStatus(EXTI_Line13) != RESET) {
+
+  }
+  if(EXTI_GetITStatus(EXTI_Line14) != RESET) {
+    if(drink_stat == 0) {
+      drink_stat = 4;
+    }
+    else {
+      drink_stat--;
+    }
+  }
+  if(EXTI_GetITStatus(EXTI_Line15) != RESET) {
+    if(drink_stat == 4) {
+      drink_stat = 0;
+    }
+    else {
+      drink_stat++;
+    }
+
   }
 }
 

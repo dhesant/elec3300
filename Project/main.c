@@ -16,6 +16,8 @@ uint32_t EXTI_Line;
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 
+int drink_stat = 0;
+
 void init_lcd(void) {
    RCC_AHBPeriphClockCmd(RCC_AHBPeriph_FSMC, ENABLE);
    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOD | RCC_APB2Periph_GPIOE | RCC_APB2Periph_GPIOG, ENABLE);
@@ -32,12 +34,11 @@ void write_lcd(int selected) {
   LCD_DrawString(2, 16, (u8*)drink2, 10);
   LCD_DrawString(4, 16, (u8*)drink3, 14);
   LCD_DrawString(6, 16, (u8*)drink4, 7);
-  LCD_DrawChar(2*selected, 0, '>');  
+  LCD_DrawChar(2*selected, 0, '@');  
 }
 
 void Delayms(u32 m) {
   u32 i;
-  
   for(; m != 0; m--)
     for (i=0; i<50000; i++);
 }
@@ -82,10 +83,12 @@ int main(void) {
     int i;
     for(i = 0; i < 16; i++) {
       set_valve_status(i, 1);
+      write_lcd(i % 4);
       Delayms(1000);
     }
     for(i = 0; i < 16; i++) {
       set_valve_status(i, 0);
+      write_lcd(i % 4);
       Delayms(1000);
     }
   }
