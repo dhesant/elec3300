@@ -1,3 +1,11 @@
+# Emacs Files
+*~
+*#
+
+# IAR Files
+*.bin
+*.pbi
+
 # Object files
 *.o
 *.ko
