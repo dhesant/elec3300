@@ -1,8 +1,7 @@
 [DebugChecksum]
-Checksum=-1621498511
+Checksum=-1035240321
 [DisAssemblyWindow]
-NumStates=_ 1
-State 1=_ 1
+NumStates=_ 0
 [InstructionProfiling]
 Enabled=_ 0
 [CodeCoverage]
@@ -23,6 +22,10 @@ ByteLimit=50
 Enabled=0
 Source=2
 Graph=0
+[Disassemble mode]
+mode=1
+[Breakpoints]
+Count=0
 [Log file]
 LoggingEnabled=_ 0
 LogFile=_ ""
@@ -30,7 +33,3 @@ Category=_ 0
 [TermIOLog]
 LoggingEnabled=_ 0
 LogFile=_ ""
-[Disassemble mode]
-mode=1
-[Breakpoints]
-Count=0

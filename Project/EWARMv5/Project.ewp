@@ -508,7 +508,7 @@
         <option>
           <name>OOCOutputFormat</name>
           <version>2</version>
-          <state>0</state>
+          <state>2</state>
         </option>
         <option>
           <name>OCOutputOverride</name>
@@ -516,7 +516,7 @@
         </option>
         <option>
           <name>OOCOutputFile</name>
-          <state>Project.srec</state>
+          <state>Project.bin</state>
         </option>
         <option>
           <name>OOCCommandLineProducer</name>
@@ -524,7 +524,7 @@
         </option>
         <option>
           <name>OOCObjCopyEnable</name>
-          <state>0</state>
+          <state>1</state>
         </option>
       </data>
     </settings>
@@ -820,6 +820,9 @@
       <name>$PROJ_DIR$\..\..\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_exti.c</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\..\..\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_fsmc.c</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\..\..\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_gpio.c</name>
     </file>
     <file>
@@ -838,7 +841,25 @@
   <group>
     <name>User</name>
     <file>
+      <name>$PROJ_DIR$\..\bartender.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\bartender.h</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\lcd.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\lcd.h</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\..\main.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\pneu.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\pneu.h</name>
     </file>
     <file>
       <name>$PROJ_DIR$\..\stm32f10x_conf.h</name>

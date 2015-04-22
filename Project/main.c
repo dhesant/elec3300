@@ -3,6 +3,7 @@
 #include "stm32f10x.h"
 #include "lcd.h"
 #include "pneu.h"
+#include "bartender.h"
 
 /* Private typedef -----------------------------------------------------------*/
 GPIO_InitTypeDef GPIO_InitStructure;
@@ -13,11 +14,10 @@ uint32_t EXTI_Line;
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-/* Private function prototypes -----------------------------------------------*/
-/* Private functions ---------------------------------------------------------*/
-
 int drink_stat = 0;
 
+/* Private function prototypes -----------------------------------------------*/
+/* Private functions ---------------------------------------------------------*/
 void init_lcd(void) {
    RCC_AHBPeriphClockCmd(RCC_AHBPeriph_FSMC, ENABLE);
    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOD | RCC_APB2Periph_GPIOE | RCC_APB2Periph_GPIOG | RCC_APB2Periph_AFIO, ENABLE);
@@ -38,7 +38,7 @@ void init_buttons(void) {
 
   EXTI_InitStructure.EXTI_Line = EXTI_Line11;
   EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
-  EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising;
+  EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling;
   EXTI_InitStructure.EXTI_LineCmd = ENABLE;
   EXTI_Init(&EXTI_InitStructure);
   EXTI_InitStructure.EXTI_Line = EXTI_Line12;
@@ -50,9 +50,7 @@ void init_buttons(void) {
   EXTI_InitStructure.EXTI_Line = EXTI_Line15;
   EXTI_Init(&EXTI_InitStructure);
 
-  NVIC_InitStructure.NVIC_IRQChannel = EXTI15_10_IRQn;
-  NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-  NVIC_Init(&NVIC_InitStructure);
+  enable_joystick();
 }
 
 void Delayms(u32 m) {
@@ -98,15 +96,5 @@ int main(void) {
   init_lcd();
   write_lcd(0);
 
-  while (1) {
-    int i;
-    for(i = 0; i < 16; i++) {
-      GPIO_Write(GPIOA, 0xFF);
-      Delayms(1000);
-    }
-    for(i = 0; i < 16; i++) {
-      GPIO_Write(GPIOA, 0x00);
-      Delayms(1000);
-    }
-  }
+  while (1);
 }

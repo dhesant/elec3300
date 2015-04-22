@@ -3,5 +3,7 @@
 
 void write_lcd(int selected);
 void fill_glass(int selected);
+void enable_joystick(void);
+void disable_joystick(void);
 
 #endif
