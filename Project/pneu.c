@@ -43,20 +43,22 @@ bool get_valve_status(int id) {
 }
 
 void set_valve_status(int id, bool status) {
-  GPIO_WriteBit(valve_port[id], valve_pin[id], status);
+  if (status) {
+    valve_port[id]->BSRR = valve_pin[id];
+  }
+  else {
+    valve_port[id]->BRR = valve_pin[id];
+  }
 }
 
 void init_valves(void) {
   GPIO_InitTypeDef GPIO_InitStructure;
 
-  RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA | RCC_APB2Periph_GPIOB | 
-                         RCC_APB2Periph_GPIOC | RCC_APB2Periph_GPIOF | 
-                           RCC_APB2Periph_GPIOG, ENABLE);
+  RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA | RCC_APB2Periph_GPIOB | RCC_APB2Periph_GPIOC | RCC_APB2Periph_GPIOF | RCC_APB2Periph_GPIOG, ENABLE);
 
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_5 | 
-    GPIO_Pin_6 | GPIO_Pin_7 ;
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7 ;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
   GPIO_Init(GPIOA, &GPIO_InitStructure);
 
   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4 | GPIO_Pin_5 ;

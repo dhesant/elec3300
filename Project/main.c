@@ -96,5 +96,8 @@ int main(void) {
   init_lcd();
   write_lcd(0);
 
-  while (1);
+  while (1) {
+    set_valve_status(3, 1);
+    set_valve_status(3, 0);
+  }
 }
