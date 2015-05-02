@@ -1,9 +1,5 @@
 /* Includes ------------------------------------------------------------------*/
-#include "stm32f10x_conf.h"
-#include "stm32f10x.h"
-#include "lcd.h"
-#include "pneu.h"
-#include "bartender.h"
+#include "main.h"
 
 /* Private typedef -----------------------------------------------------------*/
 GPIO_InitTypeDef GPIO_InitStructure;
@@ -38,7 +34,7 @@ void init_buttons(void) {
 
   EXTI_InitStructure.EXTI_Line = EXTI_Line11;
   EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
-  EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling;
+  EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising;
   EXTI_InitStructure.EXTI_LineCmd = ENABLE;
   EXTI_Init(&EXTI_InitStructure);
   EXTI_InitStructure.EXTI_Line = EXTI_Line12;
@@ -49,14 +45,32 @@ void init_buttons(void) {
   EXTI_Init(&EXTI_InitStructure);
   EXTI_InitStructure.EXTI_Line = EXTI_Line15;
   EXTI_Init(&EXTI_InitStructure);
-
-  enable_joystick();
+  
+  EXTI_ClearITPendingBit(EXTI_Line11);
+  EXTI_ClearITPendingBit(EXTI_Line12);
+  EXTI_ClearITPendingBit(EXTI_Line13);
+  EXTI_ClearITPendingBit(EXTI_Line14);
+  EXTI_ClearITPendingBit(EXTI_Line15);
 }
 
 void Delayms(u32 m) {
   u32 i;
   for(; m != 0; m--)
     for (i=0; i<50000; i++);
+}
+
+void enable_joystick(void) {
+  NVIC_InitTypeDef NVIC_InitStructure;
+  NVIC_InitStructure.NVIC_IRQChannel = EXTI15_10_IRQn;
+  NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+  NVIC_Init(&NVIC_InitStructure);
+}
+
+void disable_joystick(void) {
+  NVIC_InitTypeDef NVIC_InitStructure;
+  NVIC_InitStructure.NVIC_IRQChannel = EXTI15_10_IRQn;
+  NVIC_InitStructure.NVIC_IRQChannelCmd = DISABLE;
+  NVIC_Init(&NVIC_InitStructure);
 }
 
 int main(void) {  
@@ -91,10 +105,12 @@ int main(void) {
   /* Global initialization ends above.*/
   /* -------------------------------------------------------------------------- */
 
+  init_weight();
   init_valves();
   init_buttons();
   init_lcd();
   write_lcd(0);
+  enable_joystick();
 
   while (1) {
     set_valve_status(3, 1);

@@ -142,8 +142,8 @@ void EXTI9_5_IRQHandler(void) {
 void EXTI15_10_IRQHandler(void) {
   extern int drink_stat;
   if(EXTI_GetITStatus(EXTI_Line11) != RESET) {
-    fill_glass(drink_stat);
     EXTI_ClearITPendingBit(EXTI_Line11);
+    fill_glass(drink_stat);
   }
   if(EXTI_GetITStatus(EXTI_Line12) != RESET) {
     EXTI_ClearITPendingBit(EXTI_Line12);
@@ -152,6 +152,7 @@ void EXTI15_10_IRQHandler(void) {
     EXTI_ClearITPendingBit(EXTI_Line13);
   }
   if(EXTI_GetITStatus(EXTI_Line14) != RESET) {
+    EXTI_ClearITPendingBit(EXTI_Line14);
     if(drink_stat == 0) {
       drink_stat = 3;
     }
@@ -159,9 +160,9 @@ void EXTI15_10_IRQHandler(void) {
       drink_stat--;
     }
     write_lcd(drink_stat);
-    EXTI_ClearITPendingBit(EXTI_Line14);
   }
   if(EXTI_GetITStatus(EXTI_Line15) != RESET) {
+    EXTI_ClearITPendingBit(EXTI_Line15);
     if(drink_stat == 3) {
       drink_stat = 0;
     }
@@ -169,7 +170,6 @@ void EXTI15_10_IRQHandler(void) {
       drink_stat++;
     }
     write_lcd(drink_stat);
-    EXTI_ClearITPendingBit(EXTI_Line15);
   }
 }
 

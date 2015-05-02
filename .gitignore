@@ -5,6 +5,8 @@
 # IAR Files
 *.bin
 *.pbi
+*.sim
+*.map
 
 # Object files
 *.o
