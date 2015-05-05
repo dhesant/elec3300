@@ -1,31 +1,93 @@
+// includes
 #include "main.h"
 #include "stdio.h"
+#include "string.h"
+
+// private definitions
+#define TEQUILA 1
+#define ORANGE 2
+#define GRENADINE 3
+#define VODKA 4
+#define SODA 0
+
+// private variables
+char* drink[4] = { "Tequila Sunrise", "The Gilbert", "Pink Polar Bear", "Screwdriver" };
+int MAX_WEIGHT=250;
 
 void write_lcd(int selected) {
-  char* drink1 = "Water";
-  char* drink2 = "More Water";
-  char* drink3 = "Too Much Water";
-  char* drink4 = "Tequila";
-
   LCD_Clear();
-  LCD_DrawString(0, 16, (u8*)drink1, 5);
-  LCD_DrawString(2, 16, (u8*)drink2, 10);
-  LCD_DrawString(4, 16, (u8*)drink3, 14);
-  LCD_DrawString(6, 16, (u8*)drink4, 7);
+  LCD_DrawString(0, 8, (u8*)drink[0], strlen(drink[0]));
+  LCD_DrawString(2, 8, (u8*)drink[1], strlen(drink[1]));
+  LCD_DrawString(4, 8, (u8*)drink[2], strlen(drink[2]));
+  LCD_DrawString(6, 8, (u8*)drink[3], strlen(drink[3]));
   LCD_DrawChar(2*selected, 0, '-');  
 }
 
-void fill_glass(int selected) {
-  char* msg = "Filling...";
-  char* msg2;
-  float w;
+void fill_glass(int sel) {
+  disable_joystick(); // Disable user input
 
   LCD_Clear();
-  LCD_DrawString(2, 16, (u8*)msg, 10);
+  LCD_DrawString(2, 8, (u8*)"Filling...", 10);
+  LCD_DrawString(4, 8, (u8*)drink[sel], strlen(drink[sel]));;
+
+  set_all_valves(0); // Safety check; close all valves
+  
+  int empty_weight = get_weight();
+  
+  switch(sel) {
+  case 0:  // Tequila Sunrise; 30.75% Tequila, 61.5% Orange Juice, 7.75% Grenadine
+    LCD_DrawChar(0, 0, '1');
+    fill_liquid(TEQUILA, (empty_weight + 0.3075*MAX_WEIGHT));
+    LCD_DrawChar(0, 0, '2');
+    fill_liquid(ORANGE, (empty_weight + 0.9225*MAX_WEIGHT));
+    LCD_DrawChar(0, 0, '3');
+    fill_liquid(GRENADINE, (empty_weight + MAX_WEIGHT));
+    break;
+  case 1: // The Gilbert; 58% Vodka, 30% Soda, 12% Orange Juice
+    LCD_DrawChar(0, 0, '1');
+    fill_liquid(VODKA, (empty_weight + 0.58*MAX_WEIGHT));
+    LCD_DrawChar(0, 0, '2');
+    fill_liquid(SODA, (empty_weight + 0.88*MAX_WEIGHT));
+    LCD_DrawChar(0, 0, '3');
+    fill_liquid(ORANGE, (empty_weight + MAX_WEIGHT));
+    break;
+  case 2: // Pink Polar Bear; 58% Vodka, 42% Grenadine
+    LCD_DrawChar(0, 0, '1');
+    fill_liquid(VODKA, (empty_weight + 0.58*MAX_WEIGHT));
+    LCD_DrawChar(0, 0, '2');
+    fill_liquid(GRENADINE, (empty_weight + MAX_WEIGHT));
+    break;
+  case 3: // Screwdriver; 48% Vodka, 52% Orange Juice
+    LCD_DrawChar(0, 0, '1');
+    fill_liquid(VODKA, (empty_weight + 0.48*MAX_WEIGHT));
+    LCD_DrawChar(0, 15*8, '2');
+    fill_liquid(ORANGE, (empty_weight + MAX_WEIGHT));
+    break;
+  default:
+    break;
+  }
+
+  set_all_valves(0); // Safety check; close all valves
+
+  LCD_Clear();
+  LCD_DrawString(1, 8, (u8*)"Enjoy...", 8);
+  LCD_DrawString(3, 8, (u8*)"Press Joystick", 14);
+  LCD_DrawString(5, 8, (u8*)"for new drink", 13);
+
+  enable_joystick(); // Enable user input
+}
+
+void fill_glass_debug(int sel) {
+  char* msg = "Filling...";
+  char* msg2;
+  int w;
+
   while (1) {
-    w = get_weight();
-    sprintf(msg2, "%F", w);
-    LCD_DrawString(4, 16, (u8*)msg2, 9);
+    w = get_average(100);
+    sprintf(msg2, "%d", w);
+    LCD_Clear();
+    LCD_DrawString(2, 16, (u8*)msg, 10);
+    LCD_DrawString(4, 16, (u8*)msg2, strlen(msg2));
     Delayms(100);
   }
 }
@@ -35,12 +97,12 @@ void init_weight(void) {
   GPIO_InitTypeDef GPIO_InitStructure;
   ADC_InitTypeDef ADC_InitStructure;
 
-  // Init PC.4 as ADC Input
-  RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4;
+  // Init PA.1 as ADC Input
+  RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AIN;
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-  GPIO_Init(GPIOC, &GPIO_InitStructure);
+  GPIO_Init(GPIOA, &GPIO_InitStructure);
   
   // Init ADC
   ADC_InitStructure.ADC_Mode = ADC_Mode_Independent;
@@ -60,13 +122,37 @@ void init_weight(void) {
   while(ADC_GetCalibrationStatus(ADC1));
 }
 
-float get_weight(void) {
+int get_raw(void) {
     int raw;
-    float val;
     
     ADC_SoftwareStartConvCmd(ADC1, ENABLE);
     raw = ADC_GetConversionValue(ADC1);
-    val = 3.3*raw/(float)0xfff;
-    val = (val - 0.00967) * 0.9188;
-    return val;
+    return raw;
+}
+
+int get_weight(void) {
+    int raw;    
+    raw = get_raw();
+    return raw/1.4686;
+}
+
+int get_average(int n) {
+  int i;
+  int val;
+  
+  val = get_weight();
+
+  for(i = 0; i < n; i++) {
+    val += get_weight();
+    val = val >> 1;
+    Delayms(1);
+  }
+
+  return val;  
+}
+
+void fill_liquid(int valve, int target_weight) {
+  set_valve_status(valve, 1);
+  while(get_average(10) <= target_weight);
+  set_valve_status(valve, 0);
 }

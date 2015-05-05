@@ -143,6 +143,7 @@ void EXTI15_10_IRQHandler(void) {
   extern int drink_stat;
   if(EXTI_GetITStatus(EXTI_Line11) != RESET) {
     EXTI_ClearITPendingBit(EXTI_Line11);
+//    fill_glass_debug(drink_stat);
     fill_glass(drink_stat);
   }
   if(EXTI_GetITStatus(EXTI_Line12) != RESET) {

@@ -51,6 +51,13 @@ void set_valve_status(int id, bool status) {
   }
 }
 
+void set_all_valves(bool status) {
+  int i;
+  for(i = 0; i < 16; i++) {
+    set_valve_status(i, status);
+  }
+}
+
 void init_valves(void) {
   GPIO_InitTypeDef GPIO_InitStructure;
 

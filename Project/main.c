@@ -110,10 +110,12 @@ int main(void) {
   init_buttons();
   init_lcd();
   write_lcd(0);
+
+  set_all_valves(0);
+
   enable_joystick();
 
-  while (1) {
-    set_valve_status(3, 1);
-    set_valve_status(3, 0);
-  }
+  while (1);
+
+  return 0;
 }

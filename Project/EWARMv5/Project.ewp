@@ -209,7 +209,7 @@
         <option>
           <name>CCAllowList</name>
           <version>1</version>
-          <state>0000000</state>
+          <state>1001010</state>
         </option>
         <option>
           <name>CCDebugInfo</name>
@@ -309,16 +309,16 @@
         </option>
         <option>
           <name>CCOptLevel</name>
-          <state>0</state>
+          <state>2</state>
         </option>
         <option>
           <name>CCOptStrategy</name>
           <version>0</version>
-          <state>2</state>
+          <state>0</state>
         </option>
         <option>
           <name>CCOptLevelSlave</name>
-          <state>0</state>
+          <state>2</state>
         </option>
         <option>
           <name>CompilerMisraRules98</name>
